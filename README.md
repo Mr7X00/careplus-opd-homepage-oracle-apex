@@ -1,4 +1,4 @@
-# 🏥 CarePlus(+) OPD - Oracle APEX Based Hospital Management
+# 🏥 CarePlus - OPD - Oracle APEX Based Hospital Management
 
 ![CarePlus Logo](careplus-opd-icon.png)
 
