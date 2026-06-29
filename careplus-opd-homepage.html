@@ -1,0 +1,780 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CarePlus-OPD</title>
+    <link rel="icon" type="image/png" href="careplus-opd-icon.png" />
+    <link rel="preconnect" href="https://images.unsplash.com" />
+    <style>
+      :root {
+        --primary: #0f6fca;
+        --primary-dark: #0759a6;
+        --ink: #243342;
+        --muted: #617183;
+        --soft: #eaf7fb;
+        --line: #cfe3ee;
+        --green: #1f9f78;
+        --teal: #15a6aa;
+        --warning: #f6b933;
+        --white: #ffffff;
+        --shadow: 0 22px 55px rgba(14, 91, 148, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Inter", "Segoe UI", Arial, sans-serif;
+        color: var(--ink);
+        background: linear-gradient(135deg, #6c97bf 0%, #73c6dc 100%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .careplus-shell {
+        min-height: 100vh;
+        padding: 18px;
+      }
+
+      .careplus-page {
+        width: min(1120px, 100%);
+        margin: 0 auto;
+        overflow: hidden;
+        background:
+          radial-gradient(
+            circle at 100% 30%,
+            rgba(35, 170, 190, 0.16),
+            transparent 30%
+          ),
+          linear-gradient(180deg, #edf9ff 0%, #f7fdff 100%);
+        border: 1px solid rgba(255, 255, 255, 0.74);
+        box-shadow: var(--shadow);
+      }
+
+      .careplus-nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 30px 44px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 25px;
+        font-weight: 800;
+        color: var(--primary);
+      }
+
+      .brand-mark {
+        width: 46px;
+        height: 46px;
+        object-fit: cover;
+        object-position: center;
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 8px 18px rgba(15, 111, 202, 0.18);
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .nav-links a:first-child {
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 24px;
+        border: 0;
+        border-radius: 2px;
+        color: var(--white);
+        background: var(--primary);
+        font-weight: 700;
+        box-shadow: 0 12px 24px rgba(15, 111, 202, 0.2);
+        cursor: pointer;
+      }
+
+      .btn.secondary {
+        color: var(--primary);
+        background: var(--white);
+        border: 1px solid var(--line);
+        box-shadow: none;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+        gap: 42px;
+        align-items: center;
+        padding: 28px 44px 54px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 18px;
+        color: var(--green);
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        font-size: 13px;
+      }
+
+      .pulse {
+        width: 9px;
+        height: 9px;
+        background: var(--green);
+        border-radius: 50%;
+        box-shadow: 0 0 0 7px rgba(31, 159, 120, 0.13);
+      }
+
+      h1 {
+        max-width: 600px;
+        margin: 0;
+        color: var(--ink);
+        font-size: clamp(44px, 7vw, 84px);
+        line-height: 0.98;
+        letter-spacing: 0;
+        font-weight: 500;
+      }
+
+      h1 strong {
+        display: block;
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .hero-copy {
+        max-width: 510px;
+        margin: 26px 0 30px;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.62;
+      }
+
+      .hero-actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .rating {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--ink);
+        font-size: 14px;
+      }
+
+      .rating span {
+        color: var(--warning);
+        font-size: 18px;
+      }
+
+      .hero-media {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .doctor-panel,
+      .stat-panel,
+      .mini-panel {
+        background: linear-gradient(180deg, #44a2ff 0%, #7fc8ff 100%);
+        color: var(--white);
+        overflow: hidden;
+        box-shadow: 0 18px 35px rgba(31, 134, 219, 0.16);
+      }
+
+      .doctor-panel {
+        min-height: 360px;
+        padding: 24px 24px 0;
+        position: relative;
+      }
+
+      .doctor-panel img {
+        position: absolute;
+        right: -18px;
+        bottom: 0;
+        width: 92%;
+        height: 82%;
+        object-fit: cover;
+        object-position: center top;
+      }
+
+      .panel-title {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.35;
+        font-weight: 600;
+      }
+
+      .arrow {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: grid;
+        width: 34px;
+        height: 34px;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        font-size: 21px;
+      }
+
+      .stat-column {
+        display: grid;
+        gap: 14px;
+      }
+
+      .stat-panel {
+        min-height: 265px;
+        padding: 34px 26px;
+        position: relative;
+        text-align: center;
+      }
+
+      .stat-panel strong {
+        display: block;
+        margin: 16px 0 8px;
+        font-size: 28px;
+      }
+
+      .heart {
+        position: relative;
+        width: 104px;
+        margin: 26px auto 0;
+        aspect-ratio: 1;
+        background: linear-gradient(135deg, #bbf7ff, #096e93);
+        transform: rotate(-45deg);
+        filter: drop-shadow(0 12px 10px rgba(5, 80, 112, 0.25));
+      }
+
+      .heart::before,
+      .heart::after {
+        content: "";
+        position: absolute;
+        width: 104px;
+        height: 104px;
+        background: inherit;
+        border-radius: 50%;
+      }
+
+      .heart::before {
+        top: -52px;
+        left: 0;
+      }
+
+      .heart::after {
+        top: 0;
+        left: 52px;
+      }
+
+      .mini-panel {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 54px;
+        padding: 10px 14px;
+        font-size: 12px;
+      }
+
+      .avatars {
+        display: flex;
+      }
+
+      .avatars img {
+        width: 32px;
+        height: 32px;
+        margin-left: -8px;
+        object-fit: cover;
+        border: 2px solid var(--white);
+        border-radius: 50%;
+      }
+
+      .avatars img:first-child {
+        margin-left: 0;
+      }
+
+      .section {
+        padding: 50px 44px;
+        border-top: 1px solid rgba(207, 227, 238, 0.78);
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 28px;
+      }
+
+      .section h2 {
+        margin: 0;
+        color: var(--ink);
+        font-size: clamp(28px, 4vw, 44px);
+        line-height: 1.08;
+        font-weight: 650;
+      }
+
+      .section p {
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .feature-card,
+      .doctor-card,
+      .credit-card {
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+      }
+
+      .feature-card {
+        padding: 24px;
+      }
+
+      .feature-icon {
+        display: grid;
+        width: 46px;
+        height: 46px;
+        margin-bottom: 20px;
+        place-items: center;
+        color: var(--white);
+        background: linear-gradient(135deg, var(--primary), var(--green));
+        border-radius: 8px;
+        font-size: 23px;
+      }
+
+      .feature-card h3,
+      .doctor-card h3 {
+        margin: 0 0 10px;
+        font-size: 19px;
+      }
+
+      .doctors-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .doctor-card {
+        overflow: hidden;
+      }
+
+      .doctor-card img {
+        display: block;
+        width: 100%;
+        height: 210px;
+        object-fit: cover;
+        object-position: center top;
+      }
+
+      .doctor-card div {
+        padding: 18px;
+      }
+
+      .doctor-card span {
+        color: var(--primary);
+        font-size: 13px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .wellness-band {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        align-items: center;
+        background: linear-gradient(
+          135deg,
+          rgba(31, 159, 120, 0.12),
+          rgba(21, 166, 170, 0.15)
+        );
+      }
+
+      .wellness-list {
+        display: grid;
+        gap: 12px;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+
+      .wellness-list li {
+        padding: 14px 16px;
+        background: rgba(255, 255, 255, 0.68);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        color: var(--ink);
+      }
+
+      .credits {
+        display: grid;
+        grid-template-columns: 1.3fr 0.7fr;
+        gap: 18px;
+        align-items: stretch;
+      }
+
+      .credit-card {
+        padding: 26px;
+      }
+
+      .credit-card strong {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--primary);
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 26px 44px 34px;
+        color: var(--muted);
+        font-size: 14px;
+        border-top: 1px solid rgba(207, 227, 238, 0.78);
+      }
+
+      @media (max-width: 920px) {
+        .careplus-nav {
+          flex-wrap: wrap;
+          padding: 26px;
+        }
+
+        .nav-links {
+          order: 3;
+          width: 100%;
+          justify-content: space-between;
+          gap: 12px;
+        }
+
+        .hero,
+        .wellness-band,
+        .credits {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          padding: 18px 26px 42px;
+        }
+
+        .hero-media {
+          max-width: 560px;
+        }
+
+        .section,
+        .footer {
+          padding-left: 26px;
+          padding-right: 26px;
+        }
+
+        .feature-grid,
+        .doctors-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 620px) {
+        .careplus-shell {
+          padding: 0;
+        }
+
+        .careplus-page {
+          min-height: 100vh;
+        }
+
+        .careplus-nav .btn {
+          width: 100%;
+        }
+
+        .nav-links {
+          overflow-x: auto;
+          justify-content: flex-start;
+          padding-bottom: 4px;
+        }
+
+        .hero-media,
+        .feature-grid,
+        .doctors-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .doctor-panel {
+          min-height: 310px;
+        }
+
+        .section-head,
+        .footer {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="careplus-shell">
+      <div class="careplus-page">
+        <nav class="careplus-nav" aria-label="Primary navigation">
+          <a class="brand" href="#">
+            <img class="brand-mark" src="careplus-opd-icon.png" alt="CarePlus-OPD icon" />
+            CarePlus(+)
+          </a>
+          <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#health">Health Tips</a>
+            <a href="#doctors">Doctors</a>
+            <a href="#opd">OPD Software</a>
+          </div>
+          <a class="btn" href="#doctors">Find a Doctor</a>
+        </nav>
+
+        <section class="hero">
+          <div>
+            <div class="eyebrow">
+              <span class="pulse"></span> Doctors Hospital OPD Care
+            </div>
+            <h1>Integrated <strong>OPD Medical</strong> Solutions</h1>
+            <p class="hero-copy">
+              CarePlus is an Oracle APEX based OPD software designed to help
+              patients understand hospital services, connect with doctors,
+              manage appointments, and follow practical awareness tips for
+              physical health and a cleaner environment.
+            </p>
+            <div class="hero-actions">
+              <a class="btn" href="#opd">Book an Appointment</a>
+              <span class="rating"
+                ><span>*</span> 4.9 Patient Satisfaction</span
+              >
+            </div>
+          </div>
+
+          <div class="hero-media" aria-label="Doctor and hospital highlights">
+            <article class="doctor-panel">
+              <p class="panel-title">Meet best<br />OPD Doctors</p>
+              <span class="arrow">&nearr;</span>
+              <img
+                alt="Senior doctor in white coat"
+                src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=620&q=80"
+              />
+            </article>
+            <div class="stat-column">
+              <article class="stat-panel">
+                <span class="arrow">&nearr;</span>
+                <strong>50+</strong>
+                <span>Specialities</span>
+                <div class="heart" aria-hidden="true"></div>
+              </article>
+              <article class="mini-panel">
+                <div class="avatars">
+                  <img
+                    alt="Doctor avatar"
+                    src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=120&q=80"
+                  />
+                  <img
+                    alt="Doctor avatar"
+                    src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=120&q=80"
+                  />
+                  <img
+                    alt="Doctor avatar"
+                    src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=120&q=80"
+                  />
+                </div>
+                <strong
+                  >+500 Experts<br /><small>Trust Our Solutions</small></strong
+                >
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="opd">
+          <div class="section-head">
+            <h2>Smart OPD software for daily hospital work</h2>
+            <p>
+              CarePlus supports faster patient service, clearer records, and
+              better coordination between reception, doctors, and hospital
+              staff.
+            </p>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card">
+              <span class="feature-icon">+</span>
+              <h3>Patient Registration</h3>
+              <p>
+                Create patient records, keep visit history, and reduce paperwork
+                at the OPD counter.
+              </p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-icon">&#10003;</span>
+              <h3>Appointment Management</h3>
+              <p>
+                Organize doctor schedules, queue details, and visit status for
+                smoother consultations.
+              </p>
+            </article>
+            <article class="feature-card">
+              <span class="feature-icon">i</span>
+              <h3>Oracle APEX Based</h3>
+              <p>
+                Developed in Oracle APEX for a secure, web-based, and
+                easy-to-use hospital workflow.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="doctors">
+          <div class="section-head">
+            <h2>Our Doctors</h2>
+            <p>
+              Specialist care for patients visiting the Doctors Hospital OPD.
+            </p>
+          </div>
+          <div class="doctors-grid">
+            <article class="doctor-card">
+              <img
+                alt="General physician"
+                src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&w=420&q=80"
+              />
+              <div>
+                <span>General Medicine</span>
+                <h3>OPD Physician</h3>
+                <p>
+                  Primary consultation, diagnosis, and regular health guidance.
+                </p>
+              </div>
+            </article>
+            <article class="doctor-card">
+              <img
+                alt="Female doctor"
+                src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=420&q=80"
+              />
+              <div>
+                <span>Family Care</span>
+                <h3>Patient Advisor</h3>
+                <p>
+                  Support for preventive care, follow-ups, and family health
+                  awareness.
+                </p>
+              </div>
+            </article>
+            <article class="doctor-card">
+              <img
+                alt="Cardiology doctor"
+                src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=420&q=80"
+              />
+              <div>
+                <span>Cardiology</span>
+                <h3>Heart Specialist</h3>
+                <p>
+                  Heart checkups, lifestyle counselling, and risk monitoring.
+                </p>
+              </div>
+            </article>
+            <article class="doctor-card">
+              <img
+                alt="Pediatric doctor"
+                src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?auto=format&fit=crop&w=420&q=80"
+              />
+              <div>
+                <span>Child Care</span>
+                <h3>Pediatric Support</h3>
+                <p>
+                  Child health consultation, vaccination reminders, and growth
+                  advice.
+                </p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section wellness-band" id="health">
+          <div>
+            <h2>Health and environment awareness</h2>
+            <p>
+              Good health begins with daily habits. CarePlus(+) encourages
+              patients to protect their physical health and keep the hospital
+              environment clean, safe, and comfortable for everyone.
+            </p>
+            <a class="btn secondary" href="#opd">View OPD Services</a>
+          </div>
+          <ul class="wellness-list">
+            <li>
+              Wash hands regularly and follow hygiene practices inside the
+              hospital.
+            </li>
+            <li>
+              Drink clean water, eat balanced food, and avoid unnecessary junk
+              food.
+            </li>
+            <li>
+              Walk daily, sleep well, and visit the doctor for regular checkups.
+            </li>
+            <li>
+              Use dustbins, avoid plastic waste, and support a clean hospital
+              campus.
+            </li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <div class="credits">
+            <article class="credit-card">
+              <strong>Project</strong>
+              <h2>CarePlus(+) OPD Software</h2>
+              <p>
+                A patient-friendly OPD management home page for Doctors
+                Hospital, built to present doctors, hospital services, patient
+                awareness, and the benefits of digital outpatient care.
+              </p>
+            </article>
+            <article class="credit-card">
+              <strong>Developed By</strong>
+              <p>Lav Pandey</p>
+              <strong>Technology</strong>
+              <p>Oracle APEX</p>
+              <strong>Under Guidance</strong>
+              <p>Pramod Dixit Sir(Oracle Apex Trainee)</p>
+            </article>
+          </div>
+        </section>
+
+        <footer class="footer">
+          <span>CarePlus - Doctors Hospital OPD</span>
+          <span>Digital care, better health, cleaner environment.</span>
+          <span>@2026    Lav Pandey</span>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>
